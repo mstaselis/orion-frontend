@@ -1,13 +1,6 @@
-import { Client } from 'api/orion-api';
-import { inject } from 'aurelia-dependency-injection';
 import { NavigationInstruction, RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
-
-@inject(Client)
 export class App {
   private router!: Router;
-
-  constructor(private api: Client) {
-  }
 
   activate() {
     /*this.api.list_Entities().then(data => {
@@ -32,7 +25,8 @@ export class App {
       { route: 'entities', name: 'entities', title: 'Entities', nav: true, moduleId: 'components/entities' },
       { route: 'types', name: 'types', title: 'Types', nav: true, moduleId: 'components/types' },
       { route: 'subscriptions', name: 'subscriptions', title: 'Subscriptions', nav: true, moduleId: 'components/subscriptions' },
-      { route: 'registrations', name: 'registrations', title: 'Registrations', nav: true, moduleId: 'components/registrations' }
+      { route: 'registrations', name: 'registrations', title: 'Registrations', nav: true, moduleId: 'components/registrations' },
+      { route: 'service-paths', name: 'service-paths', title: 'Service paths', nav: true, moduleId: 'components/service-paths' }
     ]);
   }
 }
