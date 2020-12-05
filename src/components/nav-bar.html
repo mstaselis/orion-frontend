@@ -6,7 +6,7 @@
           <div class="hidden md:block">
             <div class="flex items-baseline space-x-4">
               <a repeat.for="nav of navigation"
-                class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 ${nav.isActive ? 'text-white bg-gray-700' : ''}"
+                class="px-3 py-2 rounded-md text-sm font-medium text-white ${nav.isActive ? 'bg-gray-700' : 'bg-gray-900'}"
                 href.bind="nav.href">
                 ${nav.title}
               </a>
@@ -38,7 +38,7 @@
     <div class="${mobileMenuOpen ? 'block' : 'hidden'} md:hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <a repeat.for="nav of navigation"
-          class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 ${nav.isActive ? 'text-white bg-gray-700' : ''}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-white  ${nav.isActive ? 'text-white bg-gray-700' : 'bg-gray-900'}"
           href.bind="nav.href">
           ${nav.title}
         </a>

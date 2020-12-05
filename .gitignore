@@ -8,6 +8,7 @@ TESTS-*.xml
 **/coverage
 **/dist
 **/*.tgz
+**/scripts
 /test/**/coverage
 /build
 
