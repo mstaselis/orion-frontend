@@ -1,11 +1,2322 @@
-define('app',["require", "exports"], function (require, exports) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('api/orion-api',["require", "exports", "aurelia-framework", "aurelia-fetch-client"], function (require, exports, aurelia_framework_1, aurelia_fetch_client_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ApiException = exports.Options18 = exports.Options17 = exports.Options16 = exports.Options15 = exports.Options14 = exports.Options13 = exports.Options11 = exports.Options9 = exports.Options8 = exports.Options7 = exports.Options5 = exports.Options4 = exports.Options2 = exports.NotifyRequest = exports.QueryResponse = exports.QueryRequest = exports.UpdateRequest = exports.UpdateRegistrationRequest = exports.RetrieveRegistrationResponse = exports.CreateRegistrationRequest = exports.ListRegistrationsResponse = exports.UpdateSubscriptionRequest = exports.CreateSubscriptionRequest = exports.ListSubscriptionsResponse = exports.Options23 = exports.RetrieveEntityTypeResponse = exports.ListEntityTypesResponse = exports.Options20 = exports.UpdateAttributeValueRequest = exports.GetAttributeValueResponse = exports.UpdateAttributeDataRequest = exports.GetAttributeDataResponse = exports.ReplaceAllEntityAttributesRequest = exports.UpdateExistingEntityAttributesRequest = exports.Options12 = exports.UpdateOrAppendEntityAttributesRequest = exports.Options10 = exports.RetrieveEntityAttributesResponse = exports.RetrieveEntityResponse = exports.Options6 = exports.CreateEntityRequest = exports.Options3 = exports.ListEntitiesResponse = exports.Options = exports.RetrieveApiResourcesResponse = exports.Client = void 0;
+    var Client = (function () {
+        function Client(baseUrl, http) {
+            this.jsonParseReviver = undefined;
+            this.http = http ? http : window;
+            this.baseUrl = baseUrl ? baseUrl : "http://orion.lab.fiware.org/";
+        }
+        Client.prototype.retrieve_API_Resources = function () {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRetrieve_API_Resources(_response);
+            });
+        };
+        Client.prototype.processRetrieve_API_Resources = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = RetrieveApiResourcesResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.list_Entities = function (id, type, idPattern, typePattern, q, mq, georel, geometry, coords, limit, offset, attrs, metadata, orderBy, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities?";
+            if (id !== undefined && id !== null)
+                url_ += "id=" + encodeURIComponent("" + id) + "&";
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (idPattern !== undefined && idPattern !== null)
+                url_ += "idPattern=" + encodeURIComponent("" + idPattern) + "&";
+            if (typePattern !== undefined && typePattern !== null)
+                url_ += "typePattern=" + encodeURIComponent("" + typePattern) + "&";
+            if (q !== undefined && q !== null)
+                url_ += "q=" + encodeURIComponent("" + q) + "&";
+            if (mq !== undefined && mq !== null)
+                url_ += "mq=" + encodeURIComponent("" + mq) + "&";
+            if (georel !== undefined && georel !== null)
+                url_ += "georel=" + encodeURIComponent("" + georel) + "&";
+            if (geometry !== undefined && geometry !== null)
+                url_ += "geometry=" + encodeURIComponent("" + geometry) + "&";
+            if (coords !== undefined && coords !== null)
+                url_ += "coords=" + encodeURIComponent("" + coords) + "&";
+            if (limit !== undefined && limit !== null)
+                url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+            if (offset !== undefined && offset !== null)
+                url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+            if (attrs !== undefined && attrs !== null)
+                url_ += "attrs=" + encodeURIComponent("" + attrs) + "&";
+            if (metadata !== undefined && metadata !== null)
+                url_ += "metadata=" + encodeURIComponent("" + metadata) + "&";
+            if (orderBy !== undefined && orderBy !== null)
+                url_ += "orderBy=" + encodeURIComponent("" + orderBy) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processList_Entities(_response);
+            });
+        };
+        Client.prototype.processList_Entities = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    if (Array.isArray(resultData200)) {
+                        result200 = [];
+                        for (var _i = 0, resultData200_1 = resultData200; _i < resultData200_1.length; _i++) {
+                            var item = resultData200_1[_i];
+                            result200.push(ListEntitiesResponse.fromJS(item));
+                        }
+                    }
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.create_Entity = function (content_Type, body, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities?";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processCreate_Entity(_response);
+            });
+        };
+        Client.prototype.processCreate_Entity = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.retrieve_Entity = function (entityId, type, attrs, metadata, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (attrs !== undefined && attrs !== null)
+                url_ += "attrs=" + encodeURIComponent("" + attrs) + "&";
+            if (metadata !== undefined && metadata !== null)
+                url_ += "metadata=" + encodeURIComponent("" + metadata) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRetrieve_Entity(_response);
+            });
+        };
+        Client.prototype.processRetrieve_Entity = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = RetrieveEntityResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.remove_Entity = function (entityId, type) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "DELETE",
+                headers: {}
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRemove_Entity(_response);
+            });
+        };
+        Client.prototype.processRemove_Entity = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.retrieve_Entity_Attributes = function (entityId, type, attrs, metadata, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (attrs !== undefined && attrs !== null)
+                url_ += "attrs=" + encodeURIComponent("" + attrs) + "&";
+            if (metadata !== undefined && metadata !== null)
+                url_ += "metadata=" + encodeURIComponent("" + metadata) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRetrieve_Entity_Attributes(_response);
+            });
+        };
+        Client.prototype.processRetrieve_Entity_Attributes = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = RetrieveEntityAttributesResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.replace_all_entity_attributes = function (entityId, content_Type, body, type, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "PUT",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processReplace_all_entity_attributes(_response);
+            });
+        };
+        Client.prototype.processReplace_all_entity_attributes = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update_or_Append_Entity_Attributes = function (entityId, content_Type, body, type, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate_or_Append_Entity_Attributes(_response);
+            });
+        };
+        Client.prototype.processUpdate_or_Append_Entity_Attributes = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update_Existing_Entity_Attributes = function (entityId, content_Type, body, type, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate_Existing_Entity_Attributes(_response);
+            });
+        };
+        Client.prototype.processUpdate_Existing_Entity_Attributes = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.get_attribute_data = function (entityId, attrName, type, metadata) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs/{attrName}?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (attrName === undefined || attrName === null)
+                throw new Error("The parameter 'attrName' must be defined.");
+            url_ = url_.replace("{attrName}", encodeURIComponent("" + attrName));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            if (metadata !== undefined && metadata !== null)
+                url_ += "metadata=" + encodeURIComponent("" + metadata) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processGet_attribute_data(_response);
+            });
+        };
+        Client.prototype.processGet_attribute_data = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = GetAttributeDataResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update_Attribute_Data = function (entityId, attrName, content_Type, body, type) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs/{attrName}?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (attrName === undefined || attrName === null)
+                throw new Error("The parameter 'attrName' must be defined.");
+            url_ = url_.replace("{attrName}", encodeURIComponent("" + attrName));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "PUT",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate_Attribute_Data(_response);
+            });
+        };
+        Client.prototype.processUpdate_Attribute_Data = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.remove_a_Single_Attribute = function (entityId, attrName, type) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs/{attrName}?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (attrName === undefined || attrName === null)
+                throw new Error("The parameter 'attrName' must be defined.");
+            url_ = url_.replace("{attrName}", encodeURIComponent("" + attrName));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "DELETE",
+                headers: {}
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRemove_a_Single_Attribute(_response);
+            });
+        };
+        Client.prototype.processRemove_a_Single_Attribute = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.get_Attribute_Value = function (entityId, attrName, type) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs/{attrName}/value?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (attrName === undefined || attrName === null)
+                throw new Error("The parameter 'attrName' must be defined.");
+            url_ = url_.replace("{attrName}", encodeURIComponent("" + attrName));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processGet_Attribute_Value(_response);
+            });
+        };
+        Client.prototype.processGet_Attribute_Value = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = GetAttributeValueResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update_Attribute_Value = function (entityId, attrName, content_Type, body, type) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/entities/{entityId}/attrs/{attrName}/value?";
+            if (entityId === undefined || entityId === null)
+                throw new Error("The parameter 'entityId' must be defined.");
+            url_ = url_.replace("{entityId}", encodeURIComponent("" + entityId));
+            if (attrName === undefined || attrName === null)
+                throw new Error("The parameter 'attrName' must be defined.");
+            url_ = url_.replace("{attrName}", encodeURIComponent("" + attrName));
+            if (type !== undefined && type !== null)
+                url_ += "type=" + encodeURIComponent("" + type) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "PUT",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate_Attribute_Value(_response);
+            });
+        };
+        Client.prototype.processUpdate_Attribute_Value = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.list_Entity_Types = function (limit, offset, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/types/?";
+            if (limit !== undefined && limit !== null)
+                url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+            if (offset !== undefined && offset !== null)
+                url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processList_Entity_Types(_response);
+            });
+        };
+        Client.prototype.processList_Entity_Types = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    if (Array.isArray(resultData200)) {
+                        result200 = [];
+                        for (var _i = 0, resultData200_2 = resultData200; _i < resultData200_2.length; _i++) {
+                            var item = resultData200_2[_i];
+                            result200.push(ListEntityTypesResponse.fromJS(item));
+                        }
+                    }
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.retrieve_entity_type = function (entityType) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/types/{entityType}";
+            if (entityType === undefined || entityType === null)
+                throw new Error("The parameter 'entityType' must be defined.");
+            url_ = url_.replace("{entityType}", encodeURIComponent("" + entityType));
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRetrieve_entity_type(_response);
+            });
+        };
+        Client.prototype.processRetrieve_entity_type = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = RetrieveEntityTypeResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.list_Subscriptions = function (limit, offset, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/subscriptions?";
+            if (limit !== undefined && limit !== null)
+                url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+            if (offset !== undefined && offset !== null)
+                url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processList_Subscriptions(_response);
+            });
+        };
+        Client.prototype.processList_Subscriptions = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    if (Array.isArray(resultData200)) {
+                        result200 = [];
+                        for (var _i = 0, resultData200_3 = resultData200; _i < resultData200_3.length; _i++) {
+                            var item = resultData200_3[_i];
+                            result200.push(ListSubscriptionsResponse.fromJS(item));
+                        }
+                    }
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.create_Subscription = function (content_Type, body) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/subscriptions";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processCreate_Subscription(_response);
+            });
+        };
+        Client.prototype.processCreate_Subscription = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 201) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.retrieve_Subscription = function (subscriptionId) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/subscriptions/{subscriptionId}";
+            if (subscriptionId === undefined || subscriptionId === null)
+                throw new Error("The parameter 'subscriptionId' must be defined.");
+            url_ = url_.replace("{subscriptionId}", encodeURIComponent("" + subscriptionId));
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRetrieve_Subscription(_response);
+            });
+        };
+        Client.prototype.processRetrieve_Subscription = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = resultData200 !== undefined ? resultData200 : null;
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.delete_subscription = function (subscriptionId) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/subscriptions/{subscriptionId}";
+            if (subscriptionId === undefined || subscriptionId === null)
+                throw new Error("The parameter 'subscriptionId' must be defined.");
+            url_ = url_.replace("{subscriptionId}", encodeURIComponent("" + subscriptionId));
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "DELETE",
+                headers: {}
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processDelete_subscription(_response);
+            });
+        };
+        Client.prototype.processDelete_subscription = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update_Subscription = function (subscriptionId, content_Type, body) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/subscriptions/{subscriptionId}";
+            if (subscriptionId === undefined || subscriptionId === null)
+                throw new Error("The parameter 'subscriptionId' must be defined.");
+            url_ = url_.replace("{subscriptionId}", encodeURIComponent("" + subscriptionId));
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate_Subscription(_response);
+            });
+        };
+        Client.prototype.processUpdate_Subscription = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.list_Registrations = function (limit, offset, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/registrations?";
+            if (limit !== undefined && limit !== null)
+                url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+            if (offset !== undefined && offset !== null)
+                url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processList_Registrations(_response);
+            });
+        };
+        Client.prototype.processList_Registrations = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    if (Array.isArray(resultData200)) {
+                        result200 = [];
+                        for (var _i = 0, resultData200_4 = resultData200; _i < resultData200_4.length; _i++) {
+                            var item = resultData200_4[_i];
+                            result200.push(ListRegistrationsResponse.fromJS(item));
+                        }
+                    }
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.create_Registration = function (content_Type, body) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/registrations";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processCreate_Registration(_response);
+            });
+        };
+        Client.prototype.processCreate_Registration = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 201) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.retrieve_Registration = function (registrationId) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/registrations/{registrationId}";
+            if (registrationId === undefined || registrationId === null)
+                throw new Error("The parameter 'registrationId' must be defined.");
+            url_ = url_.replace("{registrationId}", encodeURIComponent("" + registrationId));
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processRetrieve_Registration(_response);
+            });
+        };
+        Client.prototype.processRetrieve_Registration = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    result200 = RetrieveRegistrationResponse.fromJS(resultData200);
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.delete_Registration = function (registrationId) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/registrations/{registrationId}";
+            if (registrationId === undefined || registrationId === null)
+                throw new Error("The parameter 'registrationId' must be defined.");
+            url_ = url_.replace("{registrationId}", encodeURIComponent("" + registrationId));
+            url_ = url_.replace(/[?&]$/, "");
+            var options_ = {
+                method: "DELETE",
+                headers: {}
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processDelete_Registration(_response);
+            });
+        };
+        Client.prototype.processDelete_Registration = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update_Registration = function (registrationId, content_Type, body) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/registrations/{registrationId}";
+            if (registrationId === undefined || registrationId === null)
+                throw new Error("The parameter 'registrationId' must be defined.");
+            url_ = url_.replace("{registrationId}", encodeURIComponent("" + registrationId));
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate_Registration(_response);
+            });
+        };
+        Client.prototype.processUpdate_Registration = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.update = function (content_Type, body, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/op/update?";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processUpdate(_response);
+            });
+        };
+        Client.prototype.processUpdate = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 204) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.query = function (content_Type, body, limit, offset, orderBy, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/op/query?";
+            if (limit !== undefined && limit !== null)
+                url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+            if (offset !== undefined && offset !== null)
+                url_ += "offset=" + encodeURIComponent("" + offset) + "&";
+            if (orderBy !== undefined && orderBy !== null)
+                url_ += "orderBy=" + encodeURIComponent("" + orderBy) + "&";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                    "Accept": "application/json"
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processQuery(_response);
+            });
+        };
+        Client.prototype.processQuery = function (response) {
+            var _this = this;
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    var result200 = null;
+                    var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                    if (Array.isArray(resultData200)) {
+                        result200 = [];
+                        for (var _i = 0, resultData200_5 = resultData200; _i < resultData200_5.length; _i++) {
+                            var item = resultData200_5[_i];
+                            result200.push(QueryResponse.fromJS(item));
+                        }
+                    }
+                    return result200;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client.prototype.notify = function (content_Type, body, options) {
+            var _this = this;
+            var url_ = this.baseUrl + "/v2/op/notify?";
+            if (options !== undefined && options !== null)
+                url_ += "options=" + encodeURIComponent("" + options) + "&";
+            url_ = url_.replace(/[?&]$/, "");
+            var content_ = JSON.stringify(body);
+            var options_ = {
+                body: content_,
+                method: "POST",
+                headers: {
+                    "Content-Type": content_Type !== undefined && content_Type !== null ? "" + content_Type : "",
+                }
+            };
+            return this.http.fetch(url_, options_).then(function (_response) {
+                return _this.processNotify(_response);
+            });
+        };
+        Client.prototype.processNotify = function (response) {
+            var status = response.status;
+            var _headers = {};
+            if (response.headers && response.headers.forEach) {
+                response.headers.forEach(function (v, k) { return _headers[k] = v; });
+            }
+            ;
+            if (status === 200) {
+                return response.text().then(function (_responseText) {
+                    return;
+                });
+            }
+            else if (status !== 200 && status !== 204) {
+                return response.text().then(function (_responseText) {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                });
+            }
+            return Promise.resolve(null);
+        };
+        Client = __decorate([
+            aurelia_framework_1.inject(String, aurelia_fetch_client_1.HttpClient),
+            __metadata("design:paramtypes", [String, Object])
+        ], Client);
+        return Client;
+    }());
+    exports.Client = Client;
+    var RetrieveApiResourcesResponse = (function () {
+        function RetrieveApiResourcesResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        RetrieveApiResourcesResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.entities_url = _data["entities_url"];
+                this.types_url = _data["types_url"];
+                this.subscriptions_url = _data["subscriptions_url"];
+                this.registrations_url = _data["registrations_url"];
+            }
+        };
+        RetrieveApiResourcesResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new RetrieveApiResourcesResponse();
+            result.init(data);
+            return result;
+        };
+        RetrieveApiResourcesResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["entities_url"] = this.entities_url;
+            data["types_url"] = this.types_url;
+            data["subscriptions_url"] = this.subscriptions_url;
+            data["registrations_url"] = this.registrations_url;
+            return data;
+        };
+        return RetrieveApiResourcesResponse;
+    }());
+    exports.RetrieveApiResourcesResponse = RetrieveApiResourcesResponse;
+    var Options;
+    (function (Options) {
+        Options["Count"] = "count";
+        Options["KeyValues"] = "keyValues";
+        Options["Values"] = "values";
+        Options["Unique"] = "unique";
+    })(Options = exports.Options || (exports.Options = {}));
+    var ListEntitiesResponse = (function () {
+        function ListEntitiesResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        ListEntitiesResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.type = _data["type"];
+                this.id = _data["id"];
+                this.temperature = _data["temperature"];
+                this.speed = _data["speed"];
+            }
+        };
+        ListEntitiesResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new ListEntitiesResponse();
+            result.init(data);
+            return result;
+        };
+        ListEntitiesResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["type"] = this.type;
+            data["id"] = this.id;
+            data["temperature"] = this.temperature;
+            data["speed"] = this.speed;
+            return data;
+        };
+        return ListEntitiesResponse;
+    }());
+    exports.ListEntitiesResponse = ListEntitiesResponse;
+    var Options3;
+    (function (Options3) {
+        Options3["KeyValues"] = "keyValues";
+        Options3["Upsert"] = "upsert";
+    })(Options3 = exports.Options3 || (exports.Options3 = {}));
+    var CreateEntityRequest = (function () {
+        function CreateEntityRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        CreateEntityRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.type = _data["type"];
+                this.id = _data["id"];
+                this.temperature = _data["temperature"];
+                this.humidity = _data["humidity"];
+                this.location = _data["location"];
+            }
+        };
+        CreateEntityRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new CreateEntityRequest();
+            result.init(data);
+            return result;
+        };
+        CreateEntityRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["type"] = this.type;
+            data["id"] = this.id;
+            data["temperature"] = this.temperature;
+            data["humidity"] = this.humidity;
+            data["location"] = this.location;
+            return data;
+        };
+        return CreateEntityRequest;
+    }());
+    exports.CreateEntityRequest = CreateEntityRequest;
+    var Options6;
+    (function (Options6) {
+        Options6["KeyValues"] = "keyValues";
+        Options6["Values"] = "values";
+        Options6["Unique"] = "unique";
+    })(Options6 = exports.Options6 || (exports.Options6 = {}));
+    var RetrieveEntityResponse = (function () {
+        function RetrieveEntityResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        RetrieveEntityResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.type = _data["type"];
+                this.id = _data["id"];
+                this.temperature = _data["temperature"];
+                this.humidity = _data["humidity"];
+                this.location = _data["location"];
+            }
+        };
+        RetrieveEntityResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new RetrieveEntityResponse();
+            result.init(data);
+            return result;
+        };
+        RetrieveEntityResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["type"] = this.type;
+            data["id"] = this.id;
+            data["temperature"] = this.temperature;
+            data["humidity"] = this.humidity;
+            data["location"] = this.location;
+            return data;
+        };
+        return RetrieveEntityResponse;
+    }());
+    exports.RetrieveEntityResponse = RetrieveEntityResponse;
+    var RetrieveEntityAttributesResponse = (function () {
+        function RetrieveEntityAttributesResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        RetrieveEntityAttributesResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.temperature = _data["temperature"];
+                this.humidity = _data["humidity"];
+                this.location = _data["location"];
+            }
+        };
+        RetrieveEntityAttributesResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new RetrieveEntityAttributesResponse();
+            result.init(data);
+            return result;
+        };
+        RetrieveEntityAttributesResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["temperature"] = this.temperature;
+            data["humidity"] = this.humidity;
+            data["location"] = this.location;
+            return data;
+        };
+        return RetrieveEntityAttributesResponse;
+    }());
+    exports.RetrieveEntityAttributesResponse = RetrieveEntityAttributesResponse;
+    var Options10;
+    (function (Options10) {
+        Options10["Append"] = "append";
+        Options10["KeyValues"] = "keyValues";
+    })(Options10 = exports.Options10 || (exports.Options10 = {}));
+    var UpdateOrAppendEntityAttributesRequest = (function () {
+        function UpdateOrAppendEntityAttributesRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        UpdateOrAppendEntityAttributesRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.ambientNoise = _data["ambientNoise"];
+            }
+        };
+        UpdateOrAppendEntityAttributesRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateOrAppendEntityAttributesRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateOrAppendEntityAttributesRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["ambientNoise"] = this.ambientNoise;
+            return data;
+        };
+        return UpdateOrAppendEntityAttributesRequest;
+    }());
+    exports.UpdateOrAppendEntityAttributesRequest = UpdateOrAppendEntityAttributesRequest;
+    var Options12;
+    (function (Options12) {
+        Options12["KeyValues"] = "keyValues";
+    })(Options12 = exports.Options12 || (exports.Options12 = {}));
+    var UpdateExistingEntityAttributesRequest = (function () {
+        function UpdateExistingEntityAttributesRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        UpdateExistingEntityAttributesRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.temperature = _data["temperature"];
+                this.seatNumber = _data["seatNumber"];
+            }
+        };
+        UpdateExistingEntityAttributesRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateExistingEntityAttributesRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateExistingEntityAttributesRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["temperature"] = this.temperature;
+            data["seatNumber"] = this.seatNumber;
+            return data;
+        };
+        return UpdateExistingEntityAttributesRequest;
+    }());
+    exports.UpdateExistingEntityAttributesRequest = UpdateExistingEntityAttributesRequest;
+    var ReplaceAllEntityAttributesRequest = (function () {
+        function ReplaceAllEntityAttributesRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        ReplaceAllEntityAttributesRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.temperature = _data["temperature"];
+                this.seatNumber = _data["seatNumber"];
+            }
+        };
+        ReplaceAllEntityAttributesRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new ReplaceAllEntityAttributesRequest();
+            result.init(data);
+            return result;
+        };
+        ReplaceAllEntityAttributesRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["temperature"] = this.temperature;
+            data["seatNumber"] = this.seatNumber;
+            return data;
+        };
+        return ReplaceAllEntityAttributesRequest;
+    }());
+    exports.ReplaceAllEntityAttributesRequest = ReplaceAllEntityAttributesRequest;
+    var GetAttributeDataResponse = (function () {
+        function GetAttributeDataResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        GetAttributeDataResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.value = _data["value"];
+                this.type = _data["type"];
+                this.metadata = _data["metadata"];
+            }
+        };
+        GetAttributeDataResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new GetAttributeDataResponse();
+            result.init(data);
+            return result;
+        };
+        GetAttributeDataResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["value"] = this.value;
+            data["type"] = this.type;
+            data["metadata"] = this.metadata;
+            return data;
+        };
+        return GetAttributeDataResponse;
+    }());
+    exports.GetAttributeDataResponse = GetAttributeDataResponse;
+    var UpdateAttributeDataRequest = (function () {
+        function UpdateAttributeDataRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        UpdateAttributeDataRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.value = _data["value"];
+                this.metadata = _data["metadata"];
+            }
+        };
+        UpdateAttributeDataRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateAttributeDataRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateAttributeDataRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["value"] = this.value;
+            data["metadata"] = this.metadata;
+            return data;
+        };
+        return UpdateAttributeDataRequest;
+    }());
+    exports.UpdateAttributeDataRequest = UpdateAttributeDataRequest;
+    var GetAttributeValueResponse = (function () {
+        function GetAttributeValueResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        GetAttributeValueResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.address = _data["address"];
+                this.zipCode = _data["zipCode"];
+                this.city = _data["city"];
+                this.country = _data["country"];
+            }
+        };
+        GetAttributeValueResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new GetAttributeValueResponse();
+            result.init(data);
+            return result;
+        };
+        GetAttributeValueResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["address"] = this.address;
+            data["zipCode"] = this.zipCode;
+            data["city"] = this.city;
+            data["country"] = this.country;
+            return data;
+        };
+        return GetAttributeValueResponse;
+    }());
+    exports.GetAttributeValueResponse = GetAttributeValueResponse;
+    var UpdateAttributeValueRequest = (function () {
+        function UpdateAttributeValueRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        UpdateAttributeValueRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.address = _data["address"];
+                this.zipCode = _data["zipCode"];
+                this.city = _data["city"];
+                this.country = _data["country"];
+            }
+        };
+        UpdateAttributeValueRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateAttributeValueRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateAttributeValueRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["address"] = this.address;
+            data["zipCode"] = this.zipCode;
+            data["city"] = this.city;
+            data["country"] = this.country;
+            return data;
+        };
+        return UpdateAttributeValueRequest;
+    }());
+    exports.UpdateAttributeValueRequest = UpdateAttributeValueRequest;
+    var Options20;
+    (function (Options20) {
+        Options20["Count"] = "count";
+        Options20["Values"] = "values";
+    })(Options20 = exports.Options20 || (exports.Options20 = {}));
+    var ListEntityTypesResponse = (function () {
+        function ListEntityTypesResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        ListEntityTypesResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.type = _data["type"];
+                this.attrs = _data["attrs"];
+                this.count = _data["count"];
+            }
+        };
+        ListEntityTypesResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new ListEntityTypesResponse();
+            result.init(data);
+            return result;
+        };
+        ListEntityTypesResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["type"] = this.type;
+            data["attrs"] = this.attrs;
+            data["count"] = this.count;
+            return data;
+        };
+        return ListEntityTypesResponse;
+    }());
+    exports.ListEntityTypesResponse = ListEntityTypesResponse;
+    var RetrieveEntityTypeResponse = (function () {
+        function RetrieveEntityTypeResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        RetrieveEntityTypeResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.attrs = _data["attrs"];
+                this.count = _data["count"];
+            }
+        };
+        RetrieveEntityTypeResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new RetrieveEntityTypeResponse();
+            result.init(data);
+            return result;
+        };
+        RetrieveEntityTypeResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["attrs"] = this.attrs;
+            data["count"] = this.count;
+            return data;
+        };
+        return RetrieveEntityTypeResponse;
+    }());
+    exports.RetrieveEntityTypeResponse = RetrieveEntityTypeResponse;
+    var Options23;
+    (function (Options23) {
+        Options23["Count"] = "count";
+    })(Options23 = exports.Options23 || (exports.Options23 = {}));
+    var ListSubscriptionsResponse = (function () {
+        function ListSubscriptionsResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        ListSubscriptionsResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.id = _data["id"];
+                this.description = _data["description"];
+                this.subject = _data["subject"];
+                this.notification = _data["notification"];
+                this.expires = _data["expires"];
+                this.status = _data["status"];
+                this.throttling = _data["throttling"];
+            }
+        };
+        ListSubscriptionsResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new ListSubscriptionsResponse();
+            result.init(data);
+            return result;
+        };
+        ListSubscriptionsResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["id"] = this.id;
+            data["description"] = this.description;
+            data["subject"] = this.subject;
+            data["notification"] = this.notification;
+            data["expires"] = this.expires;
+            data["status"] = this.status;
+            data["throttling"] = this.throttling;
+            return data;
+        };
+        return ListSubscriptionsResponse;
+    }());
+    exports.ListSubscriptionsResponse = ListSubscriptionsResponse;
+    var CreateSubscriptionRequest = (function () {
+        function CreateSubscriptionRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        CreateSubscriptionRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.description = _data["description"];
+                this.subject = _data["subject"];
+                this.notification = _data["notification"];
+                this.expires = _data["expires"];
+                this.throttling = _data["throttling"];
+            }
+        };
+        CreateSubscriptionRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new CreateSubscriptionRequest();
+            result.init(data);
+            return result;
+        };
+        CreateSubscriptionRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["description"] = this.description;
+            data["subject"] = this.subject;
+            data["notification"] = this.notification;
+            data["expires"] = this.expires;
+            data["throttling"] = this.throttling;
+            return data;
+        };
+        return CreateSubscriptionRequest;
+    }());
+    exports.CreateSubscriptionRequest = CreateSubscriptionRequest;
+    var UpdateSubscriptionRequest = (function () {
+        function UpdateSubscriptionRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        UpdateSubscriptionRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.expires = _data["expires"];
+            }
+        };
+        UpdateSubscriptionRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateSubscriptionRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateSubscriptionRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["expires"] = this.expires;
+            return data;
+        };
+        return UpdateSubscriptionRequest;
+    }());
+    exports.UpdateSubscriptionRequest = UpdateSubscriptionRequest;
+    var ListRegistrationsResponse = (function () {
+        function ListRegistrationsResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        ListRegistrationsResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.id = _data["id"];
+                this.description = _data["description"];
+                this.dataProvided = _data["dataProvided"];
+                this.provider = _data["provider"];
+                this.expires = _data["expires"];
+                this.status = _data["status"];
+                this.forwardingInformation = _data["forwardingInformation"];
+            }
+        };
+        ListRegistrationsResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new ListRegistrationsResponse();
+            result.init(data);
+            return result;
+        };
+        ListRegistrationsResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["id"] = this.id;
+            data["description"] = this.description;
+            data["dataProvided"] = this.dataProvided;
+            data["provider"] = this.provider;
+            data["expires"] = this.expires;
+            data["status"] = this.status;
+            data["forwardingInformation"] = this.forwardingInformation;
+            return data;
+        };
+        return ListRegistrationsResponse;
+    }());
+    exports.ListRegistrationsResponse = ListRegistrationsResponse;
+    var CreateRegistrationRequest = (function () {
+        function CreateRegistrationRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        CreateRegistrationRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.description = _data["description"];
+                this.dataProvided = _data["dataProvided"];
+                this.provider = _data["provider"];
+            }
+        };
+        CreateRegistrationRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new CreateRegistrationRequest();
+            result.init(data);
+            return result;
+        };
+        CreateRegistrationRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["description"] = this.description;
+            data["dataProvided"] = this.dataProvided;
+            data["provider"] = this.provider;
+            return data;
+        };
+        return CreateRegistrationRequest;
+    }());
+    exports.CreateRegistrationRequest = CreateRegistrationRequest;
+    var RetrieveRegistrationResponse = (function () {
+        function RetrieveRegistrationResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        RetrieveRegistrationResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.id = _data["id"];
+                this.description = _data["description"];
+                this.dataProvided = _data["dataProvided"];
+                this.provider = _data["provider"];
+                this.expires = _data["expires"];
+                this.status = _data["status"];
+                this.forwardingInformation = _data["forwardingInformation"];
+            }
+        };
+        RetrieveRegistrationResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new RetrieveRegistrationResponse();
+            result.init(data);
+            return result;
+        };
+        RetrieveRegistrationResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["id"] = this.id;
+            data["description"] = this.description;
+            data["dataProvided"] = this.dataProvided;
+            data["provider"] = this.provider;
+            data["expires"] = this.expires;
+            data["status"] = this.status;
+            data["forwardingInformation"] = this.forwardingInformation;
+            return data;
+        };
+        return RetrieveRegistrationResponse;
+    }());
+    exports.RetrieveRegistrationResponse = RetrieveRegistrationResponse;
+    var UpdateRegistrationRequest = (function () {
+        function UpdateRegistrationRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        UpdateRegistrationRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.expires = _data["expires"];
+            }
+        };
+        UpdateRegistrationRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateRegistrationRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateRegistrationRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["expires"] = this.expires;
+            return data;
+        };
+        return UpdateRegistrationRequest;
+    }());
+    exports.UpdateRegistrationRequest = UpdateRegistrationRequest;
+    var UpdateRequest = (function () {
+        function UpdateRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+            if (!data) {
+                this.entities = [];
+            }
+        }
+        UpdateRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.actionType = _data["actionType"];
+                if (Array.isArray(_data["entities"])) {
+                    this.entities = [];
+                    for (var _i = 0, _a = _data["entities"]; _i < _a.length; _i++) {
+                        var item = _a[_i];
+                        this.entities.push(item);
+                    }
+                }
+            }
+        };
+        UpdateRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new UpdateRequest();
+            result.init(data);
+            return result;
+        };
+        UpdateRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["actionType"] = this.actionType;
+            if (Array.isArray(this.entities)) {
+                data["entities"] = [];
+                for (var _i = 0, _a = this.entities; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    data["entities"].push(item);
+                }
+            }
+            return data;
+        };
+        return UpdateRequest;
+    }());
+    exports.UpdateRequest = UpdateRequest;
+    var QueryRequest = (function () {
+        function QueryRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+            if (!data) {
+                this.entities = [];
+                this.attrs = [];
+                this.metadata = [];
+            }
+        }
+        QueryRequest.prototype.init = function (_data) {
+            if (_data) {
+                if (Array.isArray(_data["entities"])) {
+                    this.entities = [];
+                    for (var _i = 0, _a = _data["entities"]; _i < _a.length; _i++) {
+                        var item = _a[_i];
+                        this.entities.push(item);
+                    }
+                }
+                if (Array.isArray(_data["attrs"])) {
+                    this.attrs = [];
+                    for (var _b = 0, _c = _data["attrs"]; _b < _c.length; _b++) {
+                        var item = _c[_b];
+                        this.attrs.push(item);
+                    }
+                }
+                this.expression = _data["expression"];
+                if (Array.isArray(_data["metadata"])) {
+                    this.metadata = [];
+                    for (var _d = 0, _e = _data["metadata"]; _d < _e.length; _d++) {
+                        var item = _e[_d];
+                        this.metadata.push(item);
+                    }
+                }
+            }
+        };
+        QueryRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new QueryRequest();
+            result.init(data);
+            return result;
+        };
+        QueryRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            if (Array.isArray(this.entities)) {
+                data["entities"] = [];
+                for (var _i = 0, _a = this.entities; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    data["entities"].push(item);
+                }
+            }
+            if (Array.isArray(this.attrs)) {
+                data["attrs"] = [];
+                for (var _b = 0, _c = this.attrs; _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    data["attrs"].push(item);
+                }
+            }
+            data["expression"] = this.expression;
+            if (Array.isArray(this.metadata)) {
+                data["metadata"] = [];
+                for (var _d = 0, _e = this.metadata; _d < _e.length; _d++) {
+                    var item = _e[_d];
+                    data["metadata"].push(item);
+                }
+            }
+            return data;
+        };
+        return QueryRequest;
+    }());
+    exports.QueryRequest = QueryRequest;
+    var QueryResponse = (function () {
+        function QueryResponse(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+        }
+        QueryResponse.prototype.init = function (_data) {
+            if (_data) {
+                this.type = _data["type"];
+                this.id = _data["id"];
+                this.temperature = _data["temperature"];
+            }
+        };
+        QueryResponse.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new QueryResponse();
+            result.init(data);
+            return result;
+        };
+        QueryResponse.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["type"] = this.type;
+            data["id"] = this.id;
+            data["temperature"] = this.temperature;
+            return data;
+        };
+        return QueryResponse;
+    }());
+    exports.QueryResponse = QueryResponse;
+    var NotifyRequest = (function () {
+        function NotifyRequest(data) {
+            if (data) {
+                for (var property in data) {
+                    if (data.hasOwnProperty(property))
+                        this[property] = data[property];
+                }
+            }
+            if (!data) {
+                this.data = [];
+            }
+        }
+        NotifyRequest.prototype.init = function (_data) {
+            if (_data) {
+                this.subscriptionId = _data["subscriptionId"];
+                if (Array.isArray(_data["data"])) {
+                    this.data = [];
+                    for (var _i = 0, _a = _data["data"]; _i < _a.length; _i++) {
+                        var item = _a[_i];
+                        this.data.push(item);
+                    }
+                }
+            }
+        };
+        NotifyRequest.fromJS = function (data) {
+            data = typeof data === 'object' ? data : {};
+            var result = new NotifyRequest();
+            result.init(data);
+            return result;
+        };
+        NotifyRequest.prototype.toJSON = function (data) {
+            data = typeof data === 'object' ? data : {};
+            data["subscriptionId"] = this.subscriptionId;
+            if (Array.isArray(this.data)) {
+                data["data"] = [];
+                for (var _i = 0, _a = this.data; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    data["data"].push(item);
+                }
+            }
+            return data;
+        };
+        return NotifyRequest;
+    }());
+    exports.NotifyRequest = NotifyRequest;
+    var Options2;
+    (function (Options2) {
+        Options2["Count"] = "count";
+        Options2["KeyValues"] = "keyValues";
+        Options2["Values"] = "values";
+        Options2["Unique"] = "unique";
+    })(Options2 = exports.Options2 || (exports.Options2 = {}));
+    var Options4;
+    (function (Options4) {
+        Options4["KeyValues"] = "keyValues";
+        Options4["Upsert"] = "upsert";
+    })(Options4 = exports.Options4 || (exports.Options4 = {}));
+    var Options5;
+    (function (Options5) {
+        Options5["KeyValues"] = "keyValues";
+        Options5["Values"] = "values";
+        Options5["Unique"] = "unique";
+    })(Options5 = exports.Options5 || (exports.Options5 = {}));
+    var Options7;
+    (function (Options7) {
+        Options7["KeyValues"] = "keyValues";
+        Options7["Values"] = "values";
+        Options7["Unique"] = "unique";
+    })(Options7 = exports.Options7 || (exports.Options7 = {}));
+    var Options8;
+    (function (Options8) {
+        Options8["KeyValues"] = "keyValues";
+    })(Options8 = exports.Options8 || (exports.Options8 = {}));
+    var Options9;
+    (function (Options9) {
+        Options9["Append"] = "append";
+        Options9["KeyValues"] = "keyValues";
+    })(Options9 = exports.Options9 || (exports.Options9 = {}));
+    var Options11;
+    (function (Options11) {
+        Options11["KeyValues"] = "keyValues";
+    })(Options11 = exports.Options11 || (exports.Options11 = {}));
+    var Options13;
+    (function (Options13) {
+        Options13["Count"] = "count";
+        Options13["Values"] = "values";
+    })(Options13 = exports.Options13 || (exports.Options13 = {}));
+    var Options14;
+    (function (Options14) {
+        Options14["Count"] = "count";
+    })(Options14 = exports.Options14 || (exports.Options14 = {}));
+    var Options15;
+    (function (Options15) {
+        Options15["Count"] = "count";
+    })(Options15 = exports.Options15 || (exports.Options15 = {}));
+    var Options16;
+    (function (Options16) {
+        Options16["KeyValues"] = "keyValues";
+    })(Options16 = exports.Options16 || (exports.Options16 = {}));
+    var Options17;
+    (function (Options17) {
+        Options17["Count"] = "count";
+        Options17["KeyValues"] = "keyValues";
+        Options17["Values"] = "values";
+        Options17["Unique"] = "unique";
+    })(Options17 = exports.Options17 || (exports.Options17 = {}));
+    var Options18;
+    (function (Options18) {
+        Options18["KeyValues"] = "keyValues";
+    })(Options18 = exports.Options18 || (exports.Options18 = {}));
+    var ApiException = (function (_super) {
+        __extends(ApiException, _super);
+        function ApiException(message, status, response, headers, result) {
+            var _this = _super.call(this) || this;
+            _this.isApiException = true;
+            _this.message = message;
+            _this.status = status;
+            _this.response = response;
+            _this.headers = headers;
+            _this.result = result;
+            return _this;
+        }
+        ApiException.isApiException = function (obj) {
+            return obj.isApiException === true;
+        };
+        return ApiException;
+    }(Error));
+    exports.ApiException = ApiException;
+    function throwException(message, status, response, headers, result) {
+        if (result !== null && result !== undefined)
+            throw result;
+        else
+            throw new ApiException(message, status, response, headers, null);
+    }
+});
+;
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('app',["require", "exports", "api/orion-api", "aurelia-dependency-injection"], function (require, exports, orion_api_1, aurelia_dependency_injection_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
     var App = (function () {
-        function App() {
-            this.message = 'orion-frontend';
+        function App(api) {
+            this.api = api;
+            this.message = 'orion-frontend-api';
         }
+        App.prototype.activate = function () {
+            var _this = this;
+            this.api.list_Entities().then(function (data) {
+                _this.message = data.length
+                    .toString();
+            });
+        };
+        App = __decorate([
+            aurelia_dependency_injection_1.inject(orion_api_1.Client),
+            __metadata("design:paramtypes", [orion_api_1.Client])
+        ], App);
         return App;
     }());
     exports.App = App;
@@ -18,11 +2329,12 @@ define('environment',["require", "exports"], function (require, exports) {
     exports.default = {
         debug: true,
         testing: true,
-        processCss: false
+        processCss: false,
+        orionUrl: 'http://192.168.1.66:1026'
     };
 });
 ;
-define('main',["require", "exports", "./environment"], function (require, exports, environment_1) {
+define('main',["require", "exports", "api/orion-api", "aurelia-fetch-client", "./environment"], function (require, exports, orion_api_1, aurelia_fetch_client_1, environment_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.configure = void 0;
@@ -34,6 +2346,16 @@ define('main',["require", "exports", "./environment"], function (require, export
         if (environment_1.default.testing) {
             aurelia.use.plugin('aurelia-testing');
         }
+        var http = new aurelia_fetch_client_1.HttpClient();
+        http.configure(function (config) {
+            config
+                .useStandardConfiguration()
+                .withDefaults({
+                headers: {}
+            });
+        });
+        aurelia.container.registerInstance(aurelia_fetch_client_1.HttpClient, http);
+        aurelia.container.registerHandler(orion_api_1.Client, function (c) { return new orion_api_1.Client(environment_1.default.orionUrl, c.get(aurelia_fetch_client_1.HttpClient)); });
         aurelia.start().then(function () { return aurelia.setRoot(); });
     }
     exports.configure = configure;
