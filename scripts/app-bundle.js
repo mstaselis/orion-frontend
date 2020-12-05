@@ -2304,14 +2304,25 @@ define('app',["require", "exports", "api/orion-api", "aurelia-dependency-injecti
     var App = (function () {
         function App(api) {
             this.api = api;
-            this.message = 'orion-frontend-api';
         }
         App.prototype.activate = function () {
-            var _this = this;
-            this.api.list_Entities().then(function (data) {
-                _this.message = data.length
-                    .toString();
-            });
+        };
+        App.prototype.configureRouter = function (config, router) {
+            this.router = router;
+            var handleUnknownRoutes = function (instruction) {
+                return { route: 'not-found', moduleId: 'not-found' };
+            };
+            config.mapUnknownRoutes(handleUnknownRoutes);
+            config.title = 'Orion';
+            config.options.pushState = true;
+            config.options.root = '/';
+            config.map([
+                { route: ['', 'home'], name: 'home', title: 'Home', nav: true, moduleId: 'components/index' },
+                { route: 'entities', name: 'entities', title: 'Entities', nav: true, moduleId: 'components/entities' },
+                { route: 'types', name: 'types', title: 'Types', nav: true, moduleId: 'components/types' },
+                { route: 'subscriptions', name: 'subscriptions', title: 'Subscriptions', nav: true, moduleId: 'components/subscriptions' },
+                { route: 'registrations', name: 'registrations', title: 'Registrations', nav: true, moduleId: 'components/registrations' }
+            ]);
         };
         App = __decorate([
             aurelia_dependency_injection_1.inject(orion_api_1.Client),
@@ -2322,7 +2333,108 @@ define('app',["require", "exports", "api/orion-api", "aurelia-dependency-injecti
     exports.App = App;
 });
 ;
-define('text!app.html',[],function(){return "<template><require from=\"./styles.css\"></require><body><div><nav class=\"bg-gray-900\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\"><div class=\"flex items-center justify-between h-16\"><div class=\"flex items-center\"><div class=\"hidden md:block\"><div class=\"flex items-baseline space-x-4\"><a href=\"#\" class=\"px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700\">Dashboard</a> <a href=\"#\" class=\"px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Team</a> <a href=\"#\" class=\"px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Projects</a> <a href=\"#\" class=\"px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Calendar</a> <a href=\"#\" class=\"px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Reports</a></div></div></div><div class=\"-mr-2 flex md:hidden\"><button class=\"inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white\"><svg class=\"block h-6 w-6\" stroke=\"currentColor\" fill=\"none\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"/></svg> <svg class=\"hidden h-6 w-6\" stroke=\"currentColor\" fill=\"none\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"/></svg></button></div></div></div><div class=\"hidden md:hidden\"><div class=\"px-2 pt-2 pb-3 space-y-1 sm:px-3\"><a href=\"#\" class=\"block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700\">Dashboard</a> <a href=\"#\" class=\"block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Team</a> <a href=\"#\" class=\"block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Projects</a> <a href=\"#\" class=\"block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Calendar</a> <a href=\"#\" class=\"block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700\">Reports</a></div></div></nav><header class=\"bg-white shadow\"><div class=\"max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8\"><h1 class=\"text-3xl font-bold leading-tight text-gray-900\"> ${message} </h1></div></header><main><div class=\"max-w-7xl mx-auto py-6 sm:px-6 lg:px-8\"><div class=\"px-4 py-6 sm:px-0\"></div></div></main></div></body></template>";});;
+define('text!app.html',[],function(){return "<template><require from=\"./styles.css\"></require><require from=\"./components/nav-bar\"></require><nav-bar navigation.bind=\"router.navigation\"></nav-bar><body><div><header class=\"bg-white shadow\"><div class=\"max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8\"><h1 class=\"text-3xl font-bold leading-tight text-gray-900\"></h1></div></header><main><div class=\"max-w-7xl mx-auto py-6 sm:px-6 lg:px-8\"><div class=\"px-4 py-6 sm:px-0\"><router-view></router-view></div></div></main></div></body></template>";});;
+define('components/entities',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Entities = void 0;
+    var Entities = (function () {
+        function Entities() {
+            this.message = 'Entities';
+        }
+        return Entities;
+    }());
+    exports.Entities = Entities;
+});
+;
+define('text!components/entities.html',[],function(){return "<template><h1>${message}</h1></template>";});;
+define('components/index',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Index = void 0;
+    var Index = (function () {
+        function Index() {
+            this.message = 'fiware orion frontend app';
+        }
+        return Index;
+    }());
+    exports.Index = Index;
+});
+;
+define('text!components/index.html',[],function(){return "<template><h1>${message}</h1></template>";});;
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('components/nav-bar',["require", "exports", "aurelia-framework"], function (require, exports, aurelia_framework_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.NavBar = void 0;
+    var NavBar = (function () {
+        function NavBar() {
+            this.navigation = [];
+            this.mobileMenuOpen = false;
+        }
+        NavBar.prototype.mobileMenuClicked = function () {
+            this.mobileMenuOpen = !this.mobileMenuOpen;
+        };
+        __decorate([
+            aurelia_framework_1.bindable(),
+            __metadata("design:type", Array)
+        ], NavBar.prototype, "navigation", void 0);
+        return NavBar;
+    }());
+    exports.NavBar = NavBar;
+});
+;
+define('text!components/nav-bar.html',[],function(){return "<template><nav class=\"bg-gray-900\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\"><div class=\"flex items-center justify-between h-16\"><div class=\"flex items-center\"><div class=\"hidden md:block\"><div class=\"flex items-baseline space-x-4\"><a repeat.for=\"nav of navigation\" class=\"px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 ${nav.isActive ? 'text-white bg-gray-700' : ''}\" href.bind=\"nav.href\"> ${nav.title} </a></div></div></div><div class=\"-mr-2 flex md:hidden\"><button click.delegate=\"mobileMenuClicked()\" class=\"inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white\"><svg class=\"block h-6 w-6\" stroke=\"currentColor\" fill=\"none\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"/></svg> <svg class=\"hidden h-6 w-6\" stroke=\"currentColor\" fill=\"none\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"/></svg></button></div></div></div><div class=\"${mobileMenuOpen ? 'block' : 'hidden'} md:hidden\"><div class=\"px-2 pt-2 pb-3 space-y-1 sm:px-3\"><a repeat.for=\"nav of navigation\" class=\"block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 ${nav.isActive ? 'text-white bg-gray-700' : ''}\" href.bind=\"nav.href\"> ${nav.title} </a></div></div></nav></template>";});;
+define('components/registrations',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Registrations = void 0;
+    var Registrations = (function () {
+        function Registrations() {
+            this.message = 'Registrations';
+        }
+        return Registrations;
+    }());
+    exports.Registrations = Registrations;
+});
+;
+define('text!components/registrations.html',[],function(){return "<template><h1>${message}</h1></template>";});;
+define('components/subscriptions',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Subscriptions = void 0;
+    var Subscriptions = (function () {
+        function Subscriptions() {
+            this.message = 'Subscriptions';
+        }
+        return Subscriptions;
+    }());
+    exports.Subscriptions = Subscriptions;
+});
+;
+define('text!components/subscriptions.html',[],function(){return "<template><h1>${message}</h1></template>";});;
+define('components/types',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Types = void 0;
+    var Types = (function () {
+        function Types() {
+            this.message = 'Types';
+        }
+        return Types;
+    }());
+    exports.Types = Types;
+});
+;
+define('text!components/types.html',[],function(){return "<template><h1>${message}</h1></template>";});;
 define('environment',["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
