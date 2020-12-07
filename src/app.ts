@@ -1,11 +1,28 @@
+import { bindable, inject } from 'aurelia-framework';
 import { NavigationInstruction, RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+
+const MS_FOR_LOADER_BAR_TO_APPEAR = 1;
+
+@inject(EventAggregator)
 export class App {
   private router!: Router;
+  private readonly subscriptions: Subscription[] = [];
+  @bindable isLoading: boolean;
 
-  activate() {
-    /*this.api.list_Entities().then(data => {
-      this.message = data.length.toString();
-    })*/
+  constructor(private ea: EventAggregator) { }
+
+  activate(): void {
+    let processingSubscription = this.ea.subscribe('router:navigation:processing', this.showLoaderBar);
+    let completeSubscription = this.ea.subscribe('router:navigation:complete', this.hideLoaderBar);
+
+    this.subscriptions.push(processingSubscription, completeSubscription);
+  }
+
+  deactivate(): void {
+    for (let subscription of this.subscriptions) {
+      subscription.dispose();
+    }
   }
 
   configureRouter(config: RouterConfiguration, router: Router): void {
@@ -29,4 +46,17 @@ export class App {
       { route: 'service-paths', name: 'service-paths', title: 'Service paths', nav: true, moduleId: 'components/service-paths' }
     ]);
   }
+
+  private showLoaderBar = (): void => {
+    setTimeout(() => {
+      if (this.router.isNavigating) {
+        this.isLoading = true;
+      }
+  }, MS_FOR_LOADER_BAR_TO_APPEAR);
+    
+  };
+
+  private hideLoaderBar = (): void => {
+    this.isLoading = false;
+  };
 }

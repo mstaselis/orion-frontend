@@ -8,9 +8,7 @@ export class ServicePaths {
   constructor(private orionClient: Client) {
   }
 
-  activate() {
-    this.orionClient.retrieve_API_Resources().then(resources => {
-      this.paths = resources;
-    })
+  async activate() {
+    this.paths = await this.orionClient.retrieve_API_Resources();
   }
 }
