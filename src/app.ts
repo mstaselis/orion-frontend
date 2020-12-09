@@ -2,7 +2,7 @@ import { bindable, inject } from 'aurelia-framework';
 import { NavigationInstruction, RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 
-const MS_FOR_LOADER_BAR_TO_APPEAR = 1;
+const MS_FOR_LOADER_BAR_TO_APPEAR = 50;
 
 @inject(EventAggregator)
 export class App {
@@ -29,7 +29,7 @@ export class App {
     this.router = router;
 
     const handleUnknownRoutes = (instruction: NavigationInstruction): RouteConfig => {
-      return { route: 'not-found', moduleId: 'not-found' };
+      return { route: 'not-found', moduleId: 'components/not-found' };
     }
 
     config.mapUnknownRoutes(handleUnknownRoutes);

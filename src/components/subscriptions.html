@@ -1,3 +1,32 @@
 <template>
-    <h1>${message}</h1>  
+    <require from="../resources/elements/data-table"></require>
+
+    <data-table>
+        <template replace-part="table-header">
+            <th repeat.for="header of model.headers" scope="col" as-element="hello-row"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ${header}
+            </th>
+        </template>
+        <template replace-part="table-body">
+            <tr repeat.for="item of model.items">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${item.id}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${item.description}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${item.expires}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${item.status}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${item.throttling}</div>
+                </td>                
+            </tr>
+        </template>
+    </data-table>
+    <h1>${message}</h1>
 </template>
