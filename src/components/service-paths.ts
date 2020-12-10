@@ -9,6 +9,6 @@ export class ServicePaths {
   }
 
   async activate() {
-    this.paths = await this.orionClient.retrieve_API_Resources();
+    //this.paths = await this.orionClient.retrieve_API_Resources();
   }
 }
