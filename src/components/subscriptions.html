@@ -1,5 +1,6 @@
 <template>
     <require from="../resources/elements/data-table"></require>
+    <require from="../resources/elements/data-table-pager"></require>
 
     <data-table>
         <template replace-part="table-header">
@@ -24,9 +25,9 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900">${item.throttling}</div>
-                </td>                
+                </td>
             </tr>
         </template>
     </data-table>
-    <h1>${message}</h1>
+    <data-table-pager nav.call="pageChanged($event)" total.bind="model.total" size.bind="model.pageSize"></data-table-pager>
 </template>

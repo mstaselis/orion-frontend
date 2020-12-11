@@ -1,9 +1,24 @@
-import { IListSubscriptionsResponse } from './../api/orion-api';
+import { IListSubscriptionsResponse, Options14 } from './../api/orion-api';
 import { DataTableModel } from './data-table-model';
 
 export class SubscriptionsModel extends DataTableModel<IListSubscriptionsResponse>{
-    constructor() {
+    private PAGE_SIZE = 2;
+
+    req = {
+        limit: this.PAGE_SIZE,
+        offset: 0,
+        options: Options14.Count
+      };
+
+    constructor(items: IListSubscriptionsResponse[] = null, total: number = null) {
         super();
         this.headers = ['Id', 'Description', 'Expires', 'Status', 'Throttling'];
+        this.items = items;
+        this.total = total;
+        this.pageSize = this.PAGE_SIZE;
+    }
+
+    setOffset(offset: number){
+        this.req.offset = offset;
     }
 }

@@ -1,3 +1,5 @@
+import { DataTableModel } from './../models/data-table-model';
+import { SubscriptionsModel } from './../models/subscriptions-model';
 import { ApiResponse } from './api-response';
 import { Client, ListSubscriptionsResponse, Options14 } from './../api/orion-api';
 import { inject } from 'aurelia-framework';
@@ -10,10 +12,10 @@ export class SubscriptionsRepository extends Repository {
         super();
     }
 
-    async getSubscriptions(request: PagedRequest<Options14>): Promise<ApiResponse<ListSubscriptionsResponse[]>> {
+    async getSubscriptions(request: PagedRequest<Options14>): Promise<SubscriptionsModel> {
         let orionResponse = await this.orionClient.list_Subscriptions(request.limit, request.offset, request.options);
-        let response = this.buildResponse<ListSubscriptionsResponse[]>(orionResponse);
+        let response = this.buildResponse<ListSubscriptionsResponse[]>(orionResponse);        
 
-        return response;
+        return new SubscriptionsModel(response.items, response.totalNumber);
     }
 }
