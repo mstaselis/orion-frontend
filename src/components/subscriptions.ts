@@ -4,7 +4,6 @@ import { SubscriptionsRepository } from 'repositories/subscriptions-repository';
 
 @inject(SubscriptionsRepository)
 export class Subscriptions {
-  message: string;
   model: SubscriptionsModel;
 
   constructor(private repository: SubscriptionsRepository) {

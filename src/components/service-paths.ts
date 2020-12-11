@@ -1,14 +1,16 @@
-import { Client, IRetrieveApiResourcesResponse } from 'api/orion-api';
-import { inject, bindable } from 'aurelia-framework';
+import { ServicePathsModel } from './../models/service-paths-model';
+import { Client } from 'api/orion-api';
+import { inject } from 'aurelia-framework';
+import { ServicePathsRepository } from 'repositories/service-paths-repository';
 
-@inject(Client)
+@inject(ServicePathsRepository)
 export class ServicePaths {
-  paths: IRetrieveApiResourcesResponse;
+  model: ServicePathsModel;
 
-  constructor(private orionClient: Client) {
+  constructor(private repository: ServicePathsRepository) {
   }
 
   async activate() {
-    //this.paths = await this.orionClient.retrieve_API_Resources();
+    this.model = await this.repository.getServicePaths();
   }
 }

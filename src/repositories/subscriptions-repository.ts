@@ -1,6 +1,4 @@
-import { DataTableModel } from './../models/data-table-model';
 import { SubscriptionsModel } from './../models/subscriptions-model';
-import { ApiResponse } from './api-response';
 import { Client, ListSubscriptionsResponse, Options14 } from './../api/orion-api';
 import { inject } from 'aurelia-framework';
 import { Repository } from './abstract-repository';
