@@ -1,6 +1,7 @@
 <template>
     <require from="../resources/elements/data-table"></require>
     <require from="../resources/elements/data-table-pager"></require>
+    <require from="../resources/value-converters/date"></require>
 
     <data-table>
         <template replace-part="table-header">
@@ -18,7 +19,7 @@
                     <div class="text-sm text-gray-900">${item.description}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">${item.expires}</div>
+                    <div class="text-sm text-gray-900">${item.expires | date}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900">${item.status}</div>
