@@ -18,7 +18,9 @@ export class DataTablePager {
   }
 
   navigate(page: number) {
-    this.pager.paginate(this.total, page, this.size);
-    this.nav(this.pager.pagerOptions.startIndex);
+    if (page !== this.pager.pagerOptions.currentPage) {
+      this.pager.paginate(this.total, page, this.size);
+      this.nav(this.pager.pagerOptions.startIndex);
+    }
   }
 }

@@ -20,7 +20,7 @@
         <nav class="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">          
           <a href="#" click.delegate="navigate(page)" repeat.for="page of pager.pagerOptions.pages"
             class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium 
-              ${page === pager.pagerOptions.currentPage ? 'bg-gray-700 text-white' : 'bg-white text-gray-700 hover:bg-gray-100 '}">
+              ${page === pager.pagerOptions.currentPage ? 'bg-gray-700 text-white opacity:50' : 'bg-white text-gray-700 hover:bg-gray-100 '}">
             ${page}
           </a>          
         </nav>

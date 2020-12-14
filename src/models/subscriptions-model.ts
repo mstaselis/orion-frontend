@@ -2,7 +2,7 @@ import { IListSubscriptionsResponse, Options14 } from './../api/orion-api';
 import { DataTableModel } from './data-table-model';
 
 export class SubscriptionsModel extends DataTableModel<IListSubscriptionsResponse>{
-    private PAGE_SIZE = 2;
+    private PAGE_SIZE = 10;
 
     req = {
         limit: this.PAGE_SIZE,
