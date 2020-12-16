@@ -15,8 +15,9 @@ export class App {
   activate(): void {
     let processingSubscription = this.ea.subscribe('router:navigation:processing', this.showLoaderBar);
     let completeSubscription = this.ea.subscribe('router:navigation:complete', this.hideLoaderBar);
+    let apiError = this.ea.subscribe('api:error', this.apiError);
 
-    this.subscriptions.push(processingSubscription, completeSubscription);
+    this.subscriptions.push(processingSubscription, completeSubscription, apiError);
   }
 
   deactivate(): void {
@@ -58,5 +59,9 @@ export class App {
 
   private hideLoaderBar = (): void => {
     this.isLoading = false;
+  };
+
+  private apiError = (data): void => {
+    console.log(data);
   };
 }

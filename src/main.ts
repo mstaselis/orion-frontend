@@ -1,3 +1,4 @@
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { Client } from 'api/orion-api';
 import { HttpClient } from 'aurelia-fetch-client';
 import { Aurelia } from 'aurelia-framework';
@@ -19,12 +20,22 @@ export function configure(aurelia: Aurelia) {
     config
       .useStandardConfiguration()
       .withDefaults({
-        headers: {         
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
         }
-      })      
+      })
+      .withInterceptor({
+        response(response) {
+          let ea = aurelia.container.get(EventAggregator);
+          ea.publish('api:error', response.statusText);
+
+          return response;
+        }
+      })
   });
 
-  aurelia.container.registerInstance(HttpClient, http); 
+  aurelia.container.registerInstance(HttpClient, http);
   aurelia.container.registerHandler(Client, c => new Client(environment.orionUrl, c.get(HttpClient)));
 
   aurelia.start().then(() => aurelia.setRoot());
