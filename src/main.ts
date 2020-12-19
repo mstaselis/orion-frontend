@@ -21,15 +21,14 @@ export function configure(aurelia: Aurelia) {
       .useStandardConfiguration()
       .withDefaults({
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
         }
       })
       .withInterceptor({
         response(response) {
-          let ea = aurelia.container.get(EventAggregator);
-          ea.publish('api:error', response.statusText);
-
+          if (!response.ok) {
+            let ea = aurelia.container.get(EventAggregator);
+            ea.publish('api:error', response.statusText);            
+          }
           return response;
         }
       })

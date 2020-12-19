@@ -1,23 +1,27 @@
-import { bindable, inject } from 'aurelia-framework';
+import { inject } from 'aurelia-framework';
 import { NavigationInstruction, RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 
 const MS_FOR_LOADER_BAR_TO_APPEAR = 50;
+const ERROR_DISPLAY_FOR = 5000;
 
 @inject(EventAggregator)
 export class App {
   private router!: Router;
   private readonly subscriptions: Subscription[] = [];
-  @bindable isLoading: boolean;
+  isLoading: boolean;
+  errorMessage: string;
+  isError = false;
 
   constructor(private ea: EventAggregator) { }
 
   activate(): void {
     let processingSubscription = this.ea.subscribe('router:navigation:processing', this.showLoaderBar);
     let completeSubscription = this.ea.subscribe('router:navigation:complete', this.hideLoaderBar);
+    let routerError = this.ea.subscribe('router:navigation:error', this.apiError);
     let apiError = this.ea.subscribe('api:error', this.apiError);
 
-    this.subscriptions.push(processingSubscription, completeSubscription, apiError);
+    this.subscriptions.push(processingSubscription, completeSubscription, apiError, routerError);
   }
 
   deactivate(): void {
@@ -53,8 +57,8 @@ export class App {
       if (this.router.isNavigating) {
         this.isLoading = true;
       }
-  }, MS_FOR_LOADER_BAR_TO_APPEAR);
-    
+    }, MS_FOR_LOADER_BAR_TO_APPEAR);
+
   };
 
   private hideLoaderBar = (): void => {
@@ -62,6 +66,11 @@ export class App {
   };
 
   private apiError = (data): void => {
-    console.log(data);
+    this.errorMessage = data.result.output; 
+    this.isError = true;
+    
+    setTimeout(() => {
+      this.isError = false;
+    }, ERROR_DISPLAY_FOR);
   };
 }

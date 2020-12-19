@@ -1,8 +1,7 @@
 <template>
     <require from="../resources/elements/data-table"></require>
     <require from="../resources/elements/data-table-pager"></require>
-    <require from="../resources/value-converters/date"></require>
-    <require from="../components/dialog-confirm"></require>
+    <require from="../resources/value-converters/date"></require>   
 
     <data-table>
         <template replace-part="table-header">
@@ -32,7 +31,5 @@
         </template>
     </data-table>
     <data-table-pager nav.call="pageChanged($event)" total.bind="model.total" size.bind="model.pageSize">
-    </data-table-pager>
-    <dialog-confirm confirm-open.bind="modalOpen">        
-    </dialog-confirm>
+    </data-table-pager>   
 </template>
