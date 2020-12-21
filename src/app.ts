@@ -2,7 +2,7 @@ import { inject } from 'aurelia-framework';
 import { NavigationInstruction, RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 
-const MS_FOR_LOADER_BAR_TO_APPEAR = 50;
+const MS_FOR_LOADER_BAR_TO_APPEAR = 150;
 const ERROR_DISPLAY_FOR = 5000;
 
 @inject(EventAggregator)

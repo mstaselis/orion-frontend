@@ -8,17 +8,37 @@ export class SubscriptionsModel extends DataTableModel<IListSubscriptionsRespons
         limit: this.PAGE_SIZE,
         offset: 0,
         options: Options14.Count
-      };
+    };
 
     constructor(items: IListSubscriptionsResponse[] = null, total: number = null) {
         super();
-        this.headers = ['Id', 'Description', 'Expires', 'Status', 'Throttling'];
+        this.headers = [
+            {
+                header: 'Id',
+                sorted: {
+                    headerKey: 'id',
+                    direction: 'asc'
+                }
+            },
+            {
+                header: 'Description'
+            },
+            {
+                header: 'Expires'
+            },
+            {
+                header: 'Status'
+            },
+            {
+                header: 'Throttling'
+            }
+        ];
         this.items = items;
         this.total = total;
         this.pageSize = this.PAGE_SIZE;
     }
 
-    setOffset(offset: number){
+    setOffset(offset: number) {
         this.req.offset = offset;
     }
 }

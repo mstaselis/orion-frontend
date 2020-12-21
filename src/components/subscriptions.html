@@ -5,9 +5,9 @@
 
     <data-table>
         <template replace-part="table-header">
-            <th repeat.for="header of model.headers" scope="col" as-element="hello-row"
+            <th repeat.for="header of model.headers" scope="col" as-element="hello-row" click.delegate="header.sorted ? sort(header.sorted) : null"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ${header}
+                ${header.header}
             </th>
         </template>
         <template replace-part="table-body">

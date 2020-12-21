@@ -1,7 +1,7 @@
-import { Pager } from "resources/elements/pager";
+import { DataTableHeader } from "./data-table-header";
 
 export class DataTableModel<T> {
-    headers: string[];
+    headers: DataTableHeader[];
     items: T[];
     total: number;  
     pageSize: number;  

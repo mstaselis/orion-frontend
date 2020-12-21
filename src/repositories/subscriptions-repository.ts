@@ -15,5 +15,5 @@ export class SubscriptionsRepository extends Repository {
         let response = this.buildResponse<ListSubscriptionsResponse[]>(orionResponse);        
 
         return new SubscriptionsModel(response.items, response.totalNumber);
-    }
+    }   
 }
