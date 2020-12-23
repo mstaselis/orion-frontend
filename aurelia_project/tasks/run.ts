@@ -13,6 +13,8 @@ let serve = gulp.series(
   done => {
     bs.init({
       online: false,
+      reloadDebounce: 2000,
+      https: CLIOptions.hasFlag('https'),
       open: CLIOptions.hasFlag('open') || project.platform.open,
       port: CLIOptions.getFlagValue('port') || project.platform.port,
       host: CLIOptions.getFlagValue('host') || project.platform.host || "localhost",

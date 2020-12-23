@@ -21,6 +21,11 @@
       "name": "port",
       "description": "Set port number of the dev server",
       "type": "string"
+    },
+    {
+      "name": "https",
+      "description": "Use https instead of http",
+      "type": "boolean"
     }
   ]
 }
