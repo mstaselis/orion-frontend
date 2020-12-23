@@ -1,7 +1,9 @@
+import { bindable } from 'aurelia-framework';
 
-export class DataTable { 
+export class DataTable {
+  @bindable showSearch: boolean;
 
-  valueChanged(newValue, oldValue) {
-    //
+  constructor(){
+    this.showSearch = false;
   }
 }
